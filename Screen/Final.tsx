@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Image, View, TextInput, ScrollView, Text, StyleSheet, Modal, TouchableOpacity,Alert } from 'react-native';
+import { Button, Image, View, TextInput, ScrollView, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'react-native-image-picker';
 import { ImageLibraryOptions, ImagePickerResponse } from 'react-native-image-picker';
-import Icon from 'react-native-vector-icons/Ionicons';
-
 
 const App = () => {
   const [productName, setProductName] = useState('');
@@ -43,12 +41,6 @@ const App = () => {
 
   const handleSaveProduct = async () => {
     try {
-      if (!imageUri || !productName || !productAmount) {
-      Alert.alert("Enter all field");
-        console.log('Please enter all required fields.'); 
-      
-        return;
-       } // Exit the function early if any field is empty
       // Combine image URI, product name, and amount into an object
       const productData = {
         imageUri,
@@ -70,13 +62,6 @@ const App = () => {
     }
   };
 
-  const handleDeleteProduct = (index: number) => {
-    setProducts(prevProducts => {
-      const updatedProducts = [...prevProducts];
-      updatedProducts.splice(index, 1);
-      return updatedProducts;
-    });
-  };
   return (
     <ScrollView contentContainerStyle={styles.container}>
       
@@ -107,9 +92,6 @@ const App = () => {
           {products.map((product, index) => (
             <View key={index} style={styles.productContainer}>
               <Image source={{ uri: product.imageUri }} style={styles.productImage} />
-              <TouchableOpacity onPress={() => handleDeleteProduct(index)} style={styles.deleteButton}>
-                <Icon name="trash-outline" size={20} color="red" />
-              </TouchableOpacity>
               <Text style={styles.productName}>{product.productName}</Text>
               <Text style={styles.productAmount}>{product.productAmount}</Text>
             </View>
@@ -159,7 +141,6 @@ const styles = StyleSheet.create({
     width: '80%',
     borderWidth: 1,
     padding: 10,
-    color:'black'
   },
   modalContainer: {
     flex: 1,
@@ -176,9 +157,7 @@ const styles = StyleSheet.create({
   selectedImage: {
     width: 200,
     height: 200,
-    marginTop:10,
-    marginBottom: 15,
-    borderRadius:10,
+    marginBottom: 10,
   },
    addButton: {
     position: 'absolute',
@@ -201,17 +180,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-  },
-  deleteButton: {
-    position: 'absolute',
-    top: 5,
-    right: 5,
-    width: 25,
-    height: 25,
-    borderRadius: 12.5,
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 
